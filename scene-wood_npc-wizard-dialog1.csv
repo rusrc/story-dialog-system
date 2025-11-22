@@ -4,11 +4,11 @@ dialog1;0;1;Story;;;step1;;;Wizard;Берегись, этот лес под ох
 dialog1;0;2;Story;;;step2;;;Wizard;Если хочешь пройти — тебе нужна магическая печать.;If you want to pass, you need a magic seal.;Si tu veux passer, il te faut un sceau magique.;Si quieres pasar, necesitas un sello mágico.
 dialog1;0;3;Story;;;end1;;;Wizard;Возьми её. Да пребудет с тобой свет мудрости.;Take it. May the light of wisdom be with you.;Prends-la. Que la lumière de la sagesse soit avec toi.;Tómala. Que la luz de la sabiduría esté contigo.
 dialog1;0;4;Story;;;completed;;;Wizard;Теперь иди и постарайся не умереть.;Now go and try not to die.;Maintenant va, et essaie de ne pas mourir.;Ahora ve y trata de no morir.
-
+;;;;;;;;;;;;;
 dialogue2;1;0;Story;wood-dragon-defeated;;start;;;Wizard;Ты победил Древнего Дракона? Невероятно!;You defeated the Ancient Dragon? Incredible!;Tu as vaincu le Dragon Ancien ? Incroyable !;¿Venciste al Dragón Antiguo? ¡Increíble!
 dialogue2;1;1;Story;wood-dragon-defeated;;step1;;;Wizard;Путь дальше открыт, и лес тебе больше не враг.;The path ahead is open and the forest is no longer your enemy.;Le chemin est ouvert et la forêt n’est plus ton ennemie.;El camino está abierto y el bosque ya no es tu enemigo.
 dialogue2;1;2;Story;wood-dragon-defeated;;completed;;;Wizard;Ступай дальше, герой. Судьба ждёт.;Go on, hero. Fate awaits.;Avance, héros. Le destin t’attend.;Sigue, héroe. El destino te espera.
-
-dialogue_idle;2;0;Persistent;;;;;Wizard;Приятная сегодня погода, не правда ли?;Nice weather today, isn’t it?;Il fait beau aujourd’hui, n’est-ce pas ?;Buen clima hoy, ¿verdad?
-dialogue_idle;2;1;Persistent;;;;;Wizard;Если увидишь грибов — принеси мне пару. Я зелья варю.;If you see any mushrooms, bring me a couple. I brew potions.;Si tu vois des champignons, apporte-m’en quelques-uns. Je prépare des potions.;Si ves hongos, tráeme un par. Estoy preparando pociones.
-dialogue_idle;2;2;Persistent;;;;;Wizard;Иногда я думаю… может бросить всё и уехать на море?;Sometimes I think… maybe I should drop everything and move to the sea.;Parfois je me dis… peut-être que je devrais tout quitter et partir vivre près de la mer.;A veces pienso… ¿y si lo dejo todo y me voy al mar?
+;;;;;;;;;;;;;
+dialogue_idle;2;0;Idle;;;;;Wizard;Приятная сегодня погода, не правда ли?;Nice weather today, isn’t it?;Il fait beau aujourd’hui, n’est-ce pas ?;Buen clima hoy, ¿verdad?;
+dialogue_idle;2;1;Idle;;;;;Wizard;Если увидишь грибов — принеси мне пару. Я зелья варю.;If you see any mushrooms, bring me a couple. I brew potions.;Si tu vois des champignons, apporte-m’en quelques-uns. Je prépare des potions.;Si ves hongos, tráeme un par. Estoy preparando pociones.;
+dialogue_idle;2;2;Idle;;;;;Wizard;Иногда я думаю… может бросить всё и уехать на море?;Sometimes I think… maybe I should drop everything and move to the sea.;Parfois je me dis… peut-être que je devrais tout quitter et partir vivre près de la mer.;A veces pienso… ¿y si lo dejo todo y me voy al mar?;

@@ -137,7 +137,7 @@
                 DialogueKind kind;
                 if (!Enum.TryParse(kindStr, true, out kind))
                 {
-                    kind = DialogueKind.Persistent;
+                    kind = DialogueKind.Idle;
                 }
 
                 int TryParseInt(string s) => int.TryParse(s, out var v) ? v : 0;

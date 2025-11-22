@@ -6,7 +6,7 @@
     public enum DialogueKind
     {
         Story,
-        Persistent
+        Idle
     }
 
     /// <summary>
