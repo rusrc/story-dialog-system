@@ -3,18 +3,18 @@
     /// <summary>
     /// Хранилище всех загруженных диалогов из CSV.
     /// </summary>
-    public class CsvDialogueDatabase
+    public class DialogueCollection
     {
-        private readonly List<DialogueDefinition> _dialogues = new List<DialogueDefinition>();
+        private readonly List<Dialogue> _dialogues = new List<Dialogue>();
 
-        public IEnumerable<DialogueDefinition> GetDialogues(string sceneId, string npcId)
+        public IEnumerable<Dialogue> GetDialogues(string sceneId, string npcId)
         {
             return _dialogues
                 .Where(d => d.SceneId == sceneId && d.NpcId == npcId)
                 .OrderBy(d => d.DialogueOrder);
         }
 
-        public void AddDialogue(DialogueDefinition definition)
+        public void AddDialogue(Dialogue definition)
         {
             _dialogues.Add(definition);
         }
@@ -27,57 +27,102 @@
         /// </summary>
         public void LoadFromCsvText(string sceneId, string npcId, string csvText, char separator = ';')
         {
-            using (var reader = new StringReader(csvText))
+            using var reader = new StringReader(csvText);
+
+            // Пропускаем заголовок
+            if (reader.ReadLine() == null)
+                return;
+
+            var dialogues = CreateDialoguesFromCsv(reader, sceneId, npcId, separator);
+
+            foreach (var dialogue in dialogues)
             {
-                var header = reader.ReadLine(); // можно проанализировать, здесь просто пропускаем.
-                if (header == null) return;
+                AddDialogue(dialogue);
+            }
+        }
 
-                var rows = new List<CsvRow>();
+        private IEnumerable<Dialogue> CreateDialoguesFromCsv(
+            TextReader reader,
+            string sceneId,
+            string npcId,
+            char separator)
+        {
+            var csvRows = ReadLines(reader)
+                .Where(line => !string.IsNullOrWhiteSpace(line))
+                .Where(line => !line.All(c => c == separator))
+                .Select(line => CsvRow.Parse(sceneId, npcId, line, separator))
+                .ToList();
 
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    if (string.IsNullOrWhiteSpace(line)) continue;
-                    var row = CsvRow.Parse(sceneId, npcId, line, separator);
-                    rows.Add(row);
-                }
+            var rowsDialogs = csvRows.GroupBy(r =>  r.DialogueId);
 
-                var groups = rows.GroupBy(r => r.DialogueId);
-                foreach (var g in groups)
-                {
-                    var sample = g.First();
-                    var def = new DialogueDefinition
-                    {
-                        SceneId = sceneId,
-                        NpcId = npcId,
-                        DialogueId = sample.DialogueId,
-                        DialogueOrder = sample.DialogueOrder,
-                        Kind = sample.Kind,
-                        RequiredGlobalCheckpoint = sample.RequiredGlobal,
-                        RequiredLocalCheckpoint = sample.RequiredLocal
-                    };
+            foreach (var rowsDialog in rowsDialogs)
+            {
+                yield return CreateDialogueDefinition(rowsDialog, sceneId, npcId);
+            }
+        }
 
-                    foreach (var r in g.OrderBy(r => r.LineIndex))
-                    {
-                        var lineDef = new DialogueLine
-                        {
-                            LineIndex = r.LineIndex,
-                            Speaker = r.Speaker,
-                            ResumeCheckpointId = r.ResumeCheckpoint,
-                            GlobalCheckpointToSet = r.SetGlobal,
-                            LocalCheckpointToSet = r.SetLocal
-                        };
+        private Dialogue CreateDialogueDefinition(
+            IGrouping<string, CsvRow> rowsDialog,
+            string sceneId,
+            string npcId)
+        {
+            // Получим любой, т.е. они повторяются
+            var d = rowsDialog.First();
 
-                        foreach (var kv in r.TextByLanguage)
-                        {
-                            lineDef.TextByLanguage[kv.Key] = kv.Value;
-                        }
+            var dialogueDefinition = new Dialogue
+            {
+                SceneId = sceneId,
+                NpcId = npcId,
+                DialogueId = d.DialogueId,
+                DialogueOrder = d.DialogueOrder,
+                Kind = d.Kind,
+                RequiredGlobalCheckpoint = d.RequiredGlobal,
+                RequiredLocalCheckpoint = d.RequiredLocal,
+                Lines = CreateDialogueLines(rowsDialog)
+            };
 
-                        def.Lines.Add(lineDef);
-                    }
+            return dialogueDefinition;
+        }
 
-                    AddDialogue(def);
-                }
+        private List<DialogueLine> CreateDialogueLines(IGrouping<string, CsvRow> dialogGroup)
+        {
+            var dialogLines = new List<DialogueLine>();
+
+            foreach (var row in dialogGroup.OrderBy(r => r.LineIndex))
+            {
+                var dialogueLine = CreateDialogueLine(row);
+
+                dialogLines.Add(dialogueLine);
+            }
+
+            return dialogLines;
+        }
+
+        private DialogueLine CreateDialogueLine(CsvRow row)
+        {
+            var dialogueLine = new DialogueLine
+            {
+                LineIndex = row.LineIndex,
+                Speaker = row.Speaker,
+                ResumeCheckpointId = row.ResumeCheckpoint,
+                GlobalCheckpointToSet = row.SetGlobal,
+                LocalCheckpointToSet = row.SetLocal
+            };
+
+            foreach (var (language, text) in row.TextByLanguage)
+            {
+                dialogueLine.TextByLanguage[language] = text;
+            }
+
+            return dialogueLine;
+        }
+
+        private static IEnumerable<string> ReadLines(TextReader reader)
+        {
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                yield return line;
             }
         }
 

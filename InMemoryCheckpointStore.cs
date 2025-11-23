@@ -8,19 +8,9 @@
     {
         private readonly HashSet<string> _global = new HashSet<string>();
         private readonly HashSet<string> _local = new HashSet<string>();
-        private readonly Dictionary<string, DialogueProgress> _progress =
-            new Dictionary<string, DialogueProgress>();
+        private readonly Dictionary<string, DialogueProgress> _progress = new Dictionary<string, DialogueProgress>();
 
-        private static string GlobalKey(string sceneId, string checkpointId)
-            => $"{sceneId}::{checkpointId}";
-
-        private static string LocalKey(string sceneId, string npcId, string checkpointId)
-            => $"{sceneId}::{npcId}::{checkpointId}";
-
-        private static string ProgressKey(string sceneId, string npcId, string dialogueId)
-            => $"{sceneId}::{npcId}::{dialogueId}";
-
-        public bool HasGlobalCheckpoint(string sceneId, string checkpointId)
+        public bool HasGlobalCheckpoint(string sceneId, string checkpointId)  
             => _global.Contains(GlobalKey(sceneId, checkpointId));
 
         public void SetGlobalCheckpoint(string sceneId, string checkpointId)
@@ -29,7 +19,7 @@
             _global.Add(GlobalKey(sceneId, checkpointId));
         }
 
-        public bool HasLocalCheckpoint(string sceneId, string npcId, string checkpointId)
+        public bool HasLocalCheckpoint(string sceneId, string npcId, string checkpointId) 
             => _local.Contains(LocalKey(sceneId, npcId, checkpointId));
 
         public void SetLocalCheckpoint(string sceneId, string npcId, string checkpointId)
@@ -57,5 +47,9 @@
             var key = ProgressKey(progress.SceneId, progress.NpcId, progress.DialogueId);
             _progress[key] = progress;
         }
+
+        private static string GlobalKey(string sceneId, string checkpointId) => $"{sceneId}::{checkpointId}";
+        private static string LocalKey(string sceneId, string npcId, string checkpointId) => $"{sceneId}::{npcId}::{checkpointId}";
+        private static string ProgressKey(string sceneId, string npcId, string dialogueId) => $"{sceneId}::{npcId}::{dialogueId}";
     }
 }

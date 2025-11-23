@@ -3,7 +3,7 @@
     /// <summary>
     /// Описание одного линейного диалога (последовательность реплик).
     /// </summary>
-    public class DialogueDefinition
+    public class Dialogue
     {
         public string SceneId { get; set; }
         public string NpcId { get; set; }
@@ -32,9 +32,9 @@
         public string RequiredLocalCheckpoint { get; set; }
 
         /// <summary>Строки диалога.</summary>
-        public List<DialogueLine> Lines { get; } = new List<DialogueLine>();
+        public List<DialogueLine> Lines { get; set; } = new List<DialogueLine>();
 
-        public DialogueDefinition()
+        public Dialogue()
         {
             SceneId = string.Empty;
             NpcId = string.Empty;

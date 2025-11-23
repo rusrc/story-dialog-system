@@ -14,10 +14,10 @@
     /// </summary>
     public class DialogueManager
     {
-        private readonly CsvDialogueDatabase _database;
+        private readonly DialogueCollection _database;
         private readonly ICheckpointStore _checkpointStore;
 
-        public DialogueManager(CsvDialogueDatabase database, ICheckpointStore checkpointStore)
+        public DialogueManager(DialogueCollection database, ICheckpointStore checkpointStore)
         {
             _database = database ?? throw new ArgumentNullException(nameof(database));
             _checkpointStore = checkpointStore ?? throw new ArgumentNullException(nameof(checkpointStore));
@@ -91,7 +91,7 @@
         /// <summary>
         /// Проверяем, можно ли запустить диалог по его требованиям.
         /// </summary>
-        private bool IsDialogueAvailable(DialogueDefinition def, string sceneId, string npcId)
+        private bool IsDialogueAvailable(Dialogue def, string sceneId, string npcId)
         {
             // Проверяем глобальный checkpoint, если указан.
             if (!string.IsNullOrEmpty(def.RequiredGlobalCheckpoint))

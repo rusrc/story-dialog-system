@@ -6,6 +6,7 @@
     public class DialogueProgress
     {
         public string SceneId { get; set; }
+        // TODO rename to speaker
         public string NpcId { get; set; }
         public string DialogueId { get; set; }
 

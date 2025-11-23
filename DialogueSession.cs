@@ -5,7 +5,7 @@
     /// </summary>
     public class DialogueSession
     {
-        private readonly DialogueDefinition _definition;
+        private readonly Dialogue _definition;
         private readonly ICheckpointStore _checkpointStore;
         private readonly string _sceneId;
         private readonly string _npcId;
@@ -14,7 +14,7 @@
         private bool _isCompleted;
         private bool _started;
 
-        public DialogueDefinition Definition => _definition;
+        public Dialogue Definition => _definition;
         public bool IsCompleted => _isCompleted;
         public bool IsStarted => _started;
 
@@ -34,7 +34,7 @@
         /// </summary>
         public event Action<DialogueSession> OnDialogEnd;
 
-        public DialogueSession(DialogueDefinition definition,
+        public DialogueSession(Dialogue definition,
                                int startLineIndex,
                                string sceneId,
                                string npcId,
